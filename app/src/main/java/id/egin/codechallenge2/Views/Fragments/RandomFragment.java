@@ -1,4 +1,4 @@
-package id.egin.codechallenge2;
+package id.egin.codechallenge2.Views.Fragments;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import id.egin.codechallenge2.R;
 
 public class RandomFragment extends Fragment {
     private TextView numberOne,numberTwo,numberThree;
@@ -127,6 +129,8 @@ public class RandomFragment extends Fragment {
                         thread.interrupt();
                         count = 0;
                         setVisibilityButtonStart(true);
+                        break;
+                    default:
                         break;
                 }
             }

@@ -3,4 +3,6 @@
     <color name="colorPrimary">#fa3</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#fa3</color>
+    <color name="colorSavedNumber">#f54</color>
+    <color name="colorGrey">#A9A9A9</color>
 </resources>

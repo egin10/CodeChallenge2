@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import id.egin.codechallenge2.Views.Fragments.RandomFragment;
+import id.egin.codechallenge2.Views.Fragments.SavedNumberFragment;
+
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -15,12 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-
-        RandomFragment randomFragment = new RandomFragment();
-        fragmentTransaction.add(R.id.fragment_container, randomFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if(savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RandomFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavedNumberFragment()).commit();
+        }
     }
 }
