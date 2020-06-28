@@ -1,8 +1,13 @@
 package id.egin.codechallenge2.Views.Fragments;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -12,9 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import id.egin.codechallenge2.MainActivity;
+import id.egin.codechallenge2.Models.SavedNumber;
 import id.egin.codechallenge2.R;
 
 public class RandomFragment extends Fragment {
@@ -68,7 +78,7 @@ public class RandomFragment extends Fragment {
                                     valueOne = random.nextInt(10);
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(1000);
                                     numberOne.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -82,7 +92,7 @@ public class RandomFragment extends Fragment {
                                 while (conditionTwo) {
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(1000);
                                     numberTwo.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -94,7 +104,7 @@ public class RandomFragment extends Fragment {
                                 // Three
                                 while (conditionThree) {
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(1000);
                                     numberThree.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -129,6 +139,9 @@ public class RandomFragment extends Fragment {
                         thread.interrupt();
                         count = 0;
                         setVisibilityButtonStart(true);
+                        if(valueOne == 7 && valueTwo == 7 && valueThree == 7) {
+                            Toast.makeText(getActivity(), "WIN!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         break;
