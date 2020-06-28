@@ -41,20 +41,11 @@ public class SavedNumberFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        loadData();
-
         recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);
         savedNumberAdapter = new SavedNumberAdapter(getContext(), savedNumbers);
 
         recyclerView.setAdapter(savedNumberAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         savedNumberAdapter.notifyDataSetChanged();
-    }
-
-    public void loadData() {
-        savedNumbers.add(new SavedNumber(1,3,5));
-        savedNumbers.add(new SavedNumber(1,3,5));
-        savedNumbers.add(new SavedNumber(1,3,5));
-        savedNumbers.add(new SavedNumber(1,3,5));
     }
 }

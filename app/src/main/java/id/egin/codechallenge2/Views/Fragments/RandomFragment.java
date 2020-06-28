@@ -78,7 +78,7 @@ public class RandomFragment extends Fragment {
                                     valueOne = random.nextInt(10);
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(1000);
+                                    Thread.sleep(500);
                                     numberOne.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -92,7 +92,7 @@ public class RandomFragment extends Fragment {
                                 while (conditionTwo) {
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(1000);
+                                    Thread.sleep(500);
                                     numberTwo.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -104,7 +104,7 @@ public class RandomFragment extends Fragment {
                                 // Three
                                 while (conditionThree) {
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(1000);
+                                    Thread.sleep(500);
                                     numberThree.post(new Runnable() {
                                         @Override
                                         public void run() {
