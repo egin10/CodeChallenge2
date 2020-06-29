@@ -71,7 +71,7 @@ public class RandomFragment extends Fragment {
         getIntervalTime = Double.parseDouble(sharedPreferences.getString("interval_time","0.5")) * 1000;
         intervalTime = (int) getIntervalTime;
         winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
-        Toast.makeText(getContext(), "Interval Time : "+ Integer.toString(intervalTime) + " | Win Number : " + Integer.toString(winNumber), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Interval Time : "+ Double.toString(getIntervalTime/1000) + " | Win Number : " + Integer.toString(winNumber), Toast.LENGTH_SHORT).show();
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +150,11 @@ public class RandomFragment extends Fragment {
                         thread.interrupt();
                         count = 0;
                         setVisibilityButtonStart(true);
+                        ((MainActivity)getActivity()).addSaveNumber(valueOne, valueTwo, valueThree);
+
+//                        valueOne = valueTwo = valueThree = winNumber;
                         if(valueOne == winNumber && valueTwo == winNumber && valueThree == winNumber) {
+                            ((MainActivity)getActivity()).addNotification(Integer.toString(winNumber));
                             Toast.makeText(getActivity(), "WIN!", Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -159,8 +163,6 @@ public class RandomFragment extends Fragment {
                 }
             }
         });
-
-        NotificationManager notification = (NotificationManager)getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
     }
 
     public void setVisibilityButtonStart(boolean visible) {

@@ -2,10 +2,14 @@ package id.egin.codechallenge2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import id.egin.codechallenge2.Models.SavedNumber;
 import id.egin.codechallenge2.Views.Fragments.RandomFragment;
 import id.egin.codechallenge2.Views.Fragments.SavedNumberFragment;
 
@@ -24,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction fragmentTransaction;
     private Button btnPlay,btnListData;
     private int intervalTime,winNumber;
+    private SharedPreferences sharedPreferences;
+    private List<SavedNumber> savedNumberArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         fragmentManager = getSupportFragmentManager();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     }
 
     @Override
@@ -76,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_listSaved:
                 btnPlay.setBackground(getResources().getDrawable(R.drawable.btn_menu_idle));
                 btnListData.setBackground(getResources().getDrawable(R.drawable.btn_menu));
+                Bundle bundle = new Bundle();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new SavedNumberFragment()).commit();
                 break;
@@ -88,5 +100,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         intervalTime = Integer.parseInt(sharedPreferences.getString("interval_time","7"));
         winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
+    }
+
+    public void addNotification(String winnerNumber) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("You're winner!")
+                .setContentText("The win number is " + winnerNumber);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as Notification
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0,builder.build());
+    }
+
+    public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved) {
+        if(savedNumberArrayList.size() == 10) {
+            savedNumberArrayList.set(9, new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+        }else{
+            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+        }
+    }
+
+    public List<SavedNumber> getSavedNumberArrayList() {
+        List<SavedNumber> savedNumberArray = this.savedNumberArrayList;
+        return savedNumberArray;
     }
 }

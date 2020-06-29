@@ -12,16 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import id.egin.codechallenge2.MainActivity;
 import id.egin.codechallenge2.Models.SavedNumber;
 import id.egin.codechallenge2.R;
 import id.egin.codechallenge2.Views.Adapters.SavedNumberAdapter;
 
 public class SavedNumberFragment extends Fragment {
     private RecyclerView recyclerView;
-    private ArrayList<SavedNumber> savedNumbers = new ArrayList<>();
     private SavedNumberAdapter savedNumberAdapter;
+    private List<SavedNumber> savedNumbers = new ArrayList<>();
 
     public SavedNumberFragment() {
         // Required empty public constructor
@@ -41,8 +43,11 @@ public class SavedNumberFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        savedNumbers = ((MainActivity)getActivity()).getSavedNumberArrayList();
+        Collections.reverse(savedNumbers);
+
         recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);
-        savedNumberAdapter = new SavedNumberAdapter(getContext(), savedNumbers);
+        savedNumberAdapter = new SavedNumberAdapter(getContext(), (ArrayList<SavedNumber>) savedNumbers);
 
         recyclerView.setAdapter(savedNumberAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
