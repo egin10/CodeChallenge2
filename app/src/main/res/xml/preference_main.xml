@@ -2,15 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Setting">
         <EditTextPreference
-            android:defaultValue="7"
-            android:key="win_number"
+            android:defaultValue="@string/interval_time_value"
+            android:key="interval_time"
             android:summary="This value to set an interval random time"
-            android:title="Interval Time" />
+            android:title="Interval Time"/>
         <EditTextPreference
-            android:defaultValue="7"
+            android:defaultValue="@string/win_number_value"
             android:key="win_number"
             android:summary="This value to set a win number of game"
-            android:title="Win Number" />
+            android:title="Win Number"/>
     </PreferenceCategory>
-
 </PreferenceScreen>

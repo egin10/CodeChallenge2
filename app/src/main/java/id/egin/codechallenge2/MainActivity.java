@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,10 +19,11 @@ import android.widget.Toast;
 import id.egin.codechallenge2.Views.Fragments.RandomFragment;
 import id.egin.codechallenge2.Views.Fragments.SavedNumberFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Button btnPlay,btnListData;
+    private int intervalTime,winNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         fragmentManager = getSupportFragmentManager();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     }
 
     @Override
@@ -77,5 +82,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        intervalTime = Integer.parseInt(sharedPreferences.getString("interval_time","7"));
+        winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
     }
 }

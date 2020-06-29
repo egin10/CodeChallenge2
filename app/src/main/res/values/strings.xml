@@ -2,4 +2,8 @@
     <string name="app_name">CodeChallengeUAS</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="interval_time">interval_time</string>
+    <string name="win_number">win_number</string>
+    <string name="win_number_value">7</string>
+    <string name="interval_time_value">0.5</string>
 </resources>

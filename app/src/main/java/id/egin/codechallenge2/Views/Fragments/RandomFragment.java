@@ -3,13 +3,16 @@ package id.egin.codechallenge2.Views.Fragments;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +37,8 @@ public class RandomFragment extends Fragment {
     private int valueOne,valueTwo,valueThree,count;
     private Random random;
     private boolean conditionOne,conditionTwo,conditionThree;
+    private double getIntervalTime;
+    private int intervalTime,winNumber;
 
     public RandomFragment() {
         // Required empty public constructor
@@ -62,6 +67,12 @@ public class RandomFragment extends Fragment {
         btnStart = getActivity().findViewById(R.id.btn_start);
         btnStop = getActivity().findViewById(R.id.btn_stop);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        getIntervalTime = Double.parseDouble(sharedPreferences.getString("interval_time","0.5")) * 1000;
+        intervalTime = (int) getIntervalTime;
+        winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
+        Toast.makeText(getContext(), "Interval Time : "+ Integer.toString(intervalTime) + " | Win Number : " + Integer.toString(winNumber), Toast.LENGTH_SHORT).show();
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +89,7 @@ public class RandomFragment extends Fragment {
                                     valueOne = random.nextInt(10);
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(intervalTime);
                                     numberOne.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -92,7 +103,7 @@ public class RandomFragment extends Fragment {
                                 while (conditionTwo) {
                                     valueTwo = random.nextInt(10);
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(intervalTime);
                                     numberTwo.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -104,7 +115,7 @@ public class RandomFragment extends Fragment {
                                 // Three
                                 while (conditionThree) {
                                     valueThree = random.nextInt(10);
-                                    Thread.sleep(500);
+                                    Thread.sleep(intervalTime);
                                     numberThree.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -139,7 +150,7 @@ public class RandomFragment extends Fragment {
                         thread.interrupt();
                         count = 0;
                         setVisibilityButtonStart(true);
-                        if(valueOne == 7 && valueTwo == 7 && valueThree == 7) {
+                        if(valueOne == winNumber && valueTwo == winNumber && valueThree == winNumber) {
                             Toast.makeText(getActivity(), "WIN!", Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -148,6 +159,8 @@ public class RandomFragment extends Fragment {
                 }
             }
         });
+
+        NotificationManager notification = (NotificationManager)getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
     }
 
     public void setVisibilityButtonStart(boolean visible) {
