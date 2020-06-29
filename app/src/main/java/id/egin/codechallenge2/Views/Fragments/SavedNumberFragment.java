@@ -43,7 +43,9 @@ public class SavedNumberFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Fetch data List from MainActivity
         savedNumbers = ((MainActivity)getActivity()).getSavedNumberArrayList();
+        // Reverse List
         Collections.reverse(savedNumbers);
 
         recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);

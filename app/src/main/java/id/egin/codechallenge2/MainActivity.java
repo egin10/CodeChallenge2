@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // Every Change of value in settings will set here.
         intervalTime = Integer.parseInt(sharedPreferences.getString("interval_time","7"));
         winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
     }
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved) {
+        // Checking length of array
         if(savedNumberArrayList.size() == 10) {
             savedNumberArrayList.set(9, new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
         }else{
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Getter to fetch the List
     public List<SavedNumber> getSavedNumberArrayList() {
         List<SavedNumber> savedNumberArray = this.savedNumberArrayList;
         return savedNumberArray;

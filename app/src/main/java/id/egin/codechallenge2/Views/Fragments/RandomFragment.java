@@ -67,6 +67,7 @@ public class RandomFragment extends Fragment {
         btnStart = getActivity().findViewById(R.id.btn_start);
         btnStop = getActivity().findViewById(R.id.btn_stop);
 
+        // Get value from SharedPreferences in setting menu
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         getIntervalTime = Double.parseDouble(sharedPreferences.getString("interval_time","0.5")) * 1000;
         intervalTime = (int) getIntervalTime;
@@ -150,10 +151,14 @@ public class RandomFragment extends Fragment {
                         thread.interrupt();
                         count = 0;
                         setVisibilityButtonStart(true);
+
+                        // Access Method to add new value to List in MainActivity
                         ((MainActivity)getActivity()).addSaveNumber(valueOne, valueTwo, valueThree);
 
 //                        valueOne = valueTwo = valueThree = winNumber;
+                        // Check if 3 numbers are match with the win number
                         if(valueOne == winNumber && valueTwo == winNumber && valueThree == winNumber) {
+                            // Access Method to create notification in MainActivity
                             ((MainActivity)getActivity()).addNotification(Integer.toString(winNumber));
                             Toast.makeText(getActivity(), "WIN!", Toast.LENGTH_SHORT).show();
                         }
@@ -165,6 +170,7 @@ public class RandomFragment extends Fragment {
         });
     }
 
+    // Set visibility button start when randoming the numbers
     public void setVisibilityButtonStart(boolean visible) {
         if(visible) {
             btnStart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.btn));
