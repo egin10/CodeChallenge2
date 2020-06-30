@@ -173,6 +173,7 @@ public class RandomFragment extends Fragment {
                             ((MainActivity)getActivity()).addNotification(Integer.toString(winNumber));
                             Toast.makeText(getActivity(), "WIN!", Toast.LENGTH_SHORT).show();
                         }
+
                         break;
                     default:
                         break;

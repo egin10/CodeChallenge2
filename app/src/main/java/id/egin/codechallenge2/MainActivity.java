@@ -34,11 +34,10 @@ import id.egin.codechallenge2.Views.Adapters.SavedNumberAdapter;
 import id.egin.codechallenge2.Views.Fragments.RandomFragment;
 import id.egin.codechallenge2.Views.Fragments.SavedNumberFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Button btnPlay,btnListData;
-    private int intervalTime,winNumber;
     private SharedPreferences sharedPreferences,sharedPreferencesSavedNumber;
     private List<SavedNumber> savedNumberArrayList = new ArrayList<>();
     private Gson gson;
@@ -62,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         sharedPreferencesSavedNumber = getSharedPreferences("savedNumberList", Context.MODE_PRIVATE);
+
+        savedNumberArrayList = getSharedPrefSavedNumbers();
     }
 
     @Override
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_listSaved:
                 btnPlay.setBackground(getResources().getDrawable(R.drawable.btn_menu_idle));
                 btnListData.setBackground(getResources().getDrawable(R.drawable.btn_menu));
-                Bundle bundle = new Bundle();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new SavedNumberFragment()).commit();
                 break;
@@ -104,18 +104,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Every Change of value in settings will set here.
-        intervalTime = Integer.parseInt(sharedPreferences.getString("interval_time","7"));
-        winNumber = Integer.parseInt(sharedPreferences.getString("win_number","7"));
-    }
-
     public void addNotification(String winnerNumber) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("You're winner!")
-                .setContentText("The win number is " + winnerNumber);
+                .setContentText("The win number is " + winnerNumber)
+                .setPriority(2);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
