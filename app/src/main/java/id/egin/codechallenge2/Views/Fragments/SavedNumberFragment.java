@@ -1,5 +1,7 @@
 package id.egin.codechallenge2.Views.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -7,9 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +29,7 @@ public class SavedNumberFragment extends Fragment {
     private RecyclerView recyclerView;
     private SavedNumberAdapter savedNumberAdapter;
     private List<SavedNumber> savedNumbers = new ArrayList<>();
+    private Button btnClear;
 
     public SavedNumberFragment() {
         // Required empty public constructor
@@ -42,17 +48,31 @@ public class SavedNumberFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);
+        btnClear = getActivity().findViewById(R.id.btn_clear);
 
         // Fetch data List from MainActivity
-        savedNumbers = ((MainActivity)getActivity()).getSavedNumberArrayList();
+        savedNumbers = ((MainActivity)getActivity()).getSharedPrefSavedNumbers();
         // Reverse List
-        Collections.reverse(savedNumbers);
+        if(savedNumbers != null) {
+            Collections.reverse(savedNumbers);
+            savedNumberAdapter = new SavedNumberAdapter(getContext(), (ArrayList<SavedNumber>) savedNumbers);
+            recyclerView.setAdapter(savedNumberAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            savedNumberAdapter.notifyDataSetChanged();
+        }
 
-        recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);
-        savedNumberAdapter = new SavedNumberAdapter(getContext(), (ArrayList<SavedNumber>) savedNumbers);
-
-        recyclerView.setAdapter(savedNumberAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        savedNumberAdapter.notifyDataSetChanged();
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(savedNumbers != null){
+                    SharedPreferences sharedPreferencesSavedNumber = getActivity().getSharedPreferences("savedNumberList", Context.MODE_PRIVATE);
+                    sharedPreferencesSavedNumber.edit().clear().commit();
+                    savedNumbers.clear();
+                    savedNumberAdapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "Data Clear!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

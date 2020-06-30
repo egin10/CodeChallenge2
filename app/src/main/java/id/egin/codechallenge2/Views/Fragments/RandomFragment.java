@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -39,6 +41,7 @@ public class RandomFragment extends Fragment {
     private boolean conditionOne,conditionTwo,conditionThree;
     private double getIntervalTime;
     private int intervalTime,winNumber;
+    private List<SavedNumber> savedNumberList;
 
     public RandomFragment() {
         // Required empty public constructor
@@ -153,7 +156,15 @@ public class RandomFragment extends Fragment {
                         setVisibilityButtonStart(true);
 
                         // Access Method to add new value to List in MainActivity
-                        ((MainActivity)getActivity()).addSaveNumber(valueOne, valueTwo, valueThree);
+//                        ((MainActivity)getActivity()).addSaveNumber(valueOne, valueTwo, valueThree);
+
+                        // Check SharePref SavedNumbers
+                        savedNumberList = ((MainActivity)getActivity()).getSharedPrefSavedNumbers();
+                        if (savedNumberList != null && savedNumberList.size() > 9) {
+                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree,true);
+                        }else{
+                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree,false);
+                        }
 
 //                        valueOne = valueTwo = valueThree = winNumber;
                         // Check if 3 numbers are match with the win number

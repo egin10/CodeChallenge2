@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,11 +21,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import id.egin.codechallenge2.Models.SavedNumber;
+import id.egin.codechallenge2.Views.Adapters.SavedNumberAdapter;
 import id.egin.codechallenge2.Views.Fragments.RandomFragment;
 import id.egin.codechallenge2.Views.Fragments.SavedNumberFragment;
 
@@ -33,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction fragmentTransaction;
     private Button btnPlay,btnListData;
     private int intervalTime,winNumber;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences,sharedPreferencesSavedNumber;
     private List<SavedNumber> savedNumberArrayList = new ArrayList<>();
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentManager = getSupportFragmentManager();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        sharedPreferencesSavedNumber = getSharedPreferences("savedNumberList", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -117,18 +125,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         notificationManager.notify(0,builder.build());
     }
 
-    public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved) {
-        // Checking length of array
-        if(savedNumberArrayList.size() == 10) {
-            savedNumberArrayList.set(9, new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
-        }else{
-            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
-        }
+    public List<SavedNumber> getSharedPrefSavedNumbers() {
+        gson = new Gson();
+        String json = sharedPreferencesSavedNumber.getString("listNumbers", null);
+        Type type = new TypeToken<List<SavedNumber>>() {}.getType();
+        List<SavedNumber> savedNumbers = (List<SavedNumber>) gson.fromJson(json, type);
+        return savedNumbers;
     }
 
-    // Getter to fetch the List
-    public List<SavedNumber> getSavedNumberArrayList() {
-        List<SavedNumber> savedNumberArray = this.savedNumberArrayList;
-        return savedNumberArray;
+    public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved, boolean overSize) {
+        // Checking length of array
+        if(overSize) {
+            savedNumberArrayList.remove(0);
+            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+            SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
+            String json = gson.toJson(savedNumberArrayList);
+            saveNumberPrefEdit.putString("listNumbers", json);
+            Log.d("data-listNumber", "json = " + json);
+            saveNumberPrefEdit.apply();
+        }else{
+            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+            SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
+            String json = gson.toJson(savedNumberArrayList);
+            saveNumberPrefEdit.putString("listNumbers", json);
+            Log.d("data-listNumber", "json = " + json);
+            saveNumberPrefEdit.apply();
+        }
     }
 }
