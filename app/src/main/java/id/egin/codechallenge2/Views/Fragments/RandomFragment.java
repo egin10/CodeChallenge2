@@ -161,9 +161,9 @@ public class RandomFragment extends Fragment {
                         // Check SharePref SavedNumbers
                         savedNumberList = ((MainActivity)getActivity()).getSharedPrefSavedNumbers();
                         if (savedNumberList != null && savedNumberList.size() > 9) {
-                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree,true);
+                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree, "update");
                         }else{
-                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree,false);
+                            ((MainActivity)getActivity()).addSaveNumber(valueOne,valueTwo,valueThree, "new");
                         }
 
 //                        valueOne = valueTwo = valueThree = winNumber;

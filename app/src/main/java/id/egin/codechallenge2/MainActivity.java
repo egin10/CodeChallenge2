@@ -127,19 +127,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return savedNumbers;
     }
 
-    public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved, boolean overSize) {
+    public void addSaveNumber(int numberOneSaved, int numberTwoSaved, int numberThreeSaved, String status) {
         // Checking length of array
-        if(overSize) {
-            savedNumberArrayList.remove(0);
-            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+        if(status == "update") {
+            this.savedNumberArrayList.remove(0);
+            this.savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
             SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
-            String json = gson.toJson(savedNumberArrayList);
+            String json = gson.toJson(this.savedNumberArrayList);
             saveNumberPrefEdit.putString("listNumbers", json);
             saveNumberPrefEdit.apply();
         }else{
-            savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
+            this.savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
             SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
-            String json = gson.toJson(savedNumberArrayList);
+            String json = gson.toJson(this.savedNumberArrayList);
             saveNumberPrefEdit.putString("listNumbers", json);
             saveNumberPrefEdit.apply();
         }

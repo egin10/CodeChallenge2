@@ -15,15 +15,5 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1">
             </androidx.recyclerview.widget.RecyclerView>
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Clear"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_margin="10dp"
-                android:background="@drawable/btn"/>
         </LinearLayout>
 </FrameLayout>

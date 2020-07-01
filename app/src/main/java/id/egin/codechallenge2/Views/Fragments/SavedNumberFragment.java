@@ -29,7 +29,6 @@ public class SavedNumberFragment extends Fragment {
     private RecyclerView recyclerView;
     private SavedNumberAdapter savedNumberAdapter;
     private List<SavedNumber> savedNumbers = new ArrayList<>();
-    private Button btnClear;
 
     public SavedNumberFragment() {
         // Required empty public constructor
@@ -49,7 +48,6 @@ public class SavedNumberFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView = getActivity().findViewById(R.id.recyclerViewSavedNumber);
-        btnClear = getActivity().findViewById(R.id.btn_clear);
 
         // Fetch data List from MainActivity
         savedNumbers = ((MainActivity)getActivity()).getSharedPrefSavedNumbers();
@@ -61,18 +59,5 @@ public class SavedNumberFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             savedNumberAdapter.notifyDataSetChanged();
         }
-
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(savedNumbers != null){
-                    SharedPreferences sharedPreferencesSavedNumber = getActivity().getSharedPreferences("savedNumberList", Context.MODE_PRIVATE);
-                    sharedPreferencesSavedNumber.edit().clear().commit();
-                    savedNumbers.clear();
-                    savedNumberAdapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "Data Clear!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }
