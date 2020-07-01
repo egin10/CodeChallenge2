@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         sharedPreferencesSavedNumber = getSharedPreferences("savedNumberList", Context.MODE_PRIVATE);
 
-        savedNumberArrayList = getSharedPrefSavedNumbers();
+        this.savedNumberArrayList = getSharedPrefSavedNumbers();
     }
 
     @Override
@@ -137,6 +137,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             saveNumberPrefEdit.putString("listNumbers", json);
             saveNumberPrefEdit.apply();
         }else{
+            if (this.savedNumberArrayList == null || this.savedNumberArrayList.size() < 1) {
+                this.savedNumberArrayList = new ArrayList<>();
+            }else{
+                this.savedNumberArrayList = this.savedNumberArrayList;
+            }
             this.savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
             SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
             String json = gson.toJson(this.savedNumberArrayList);
