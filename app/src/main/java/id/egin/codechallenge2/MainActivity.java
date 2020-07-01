@@ -135,14 +135,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
             String json = gson.toJson(savedNumberArrayList);
             saveNumberPrefEdit.putString("listNumbers", json);
-            Log.d("data-listNumber", "json = " + json);
             saveNumberPrefEdit.apply();
         }else{
             savedNumberArrayList.add(new SavedNumber(numberOneSaved, numberTwoSaved, numberThreeSaved));
             SharedPreferences.Editor saveNumberPrefEdit = sharedPreferencesSavedNumber.edit();
             String json = gson.toJson(savedNumberArrayList);
             saveNumberPrefEdit.putString("listNumbers", json);
-            Log.d("data-listNumber", "json = " + json);
             saveNumberPrefEdit.apply();
         }
     }
